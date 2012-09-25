@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Plugin to monitor HTTP response ( httping )
+# MIT Licence
+# Sept 9, 2012  Masahito Zembutsu <zem@pocketstudio.jp>
+
+#%# family=auto
+#%# capabilities=autoconf
+
+URL=${URL:-"http://localhost/"}
+COUNT=${COUNT:-"5"}
+httping_bin=$(which httping)
+
+
+if [ "$1" = "autoconf" ]; then
+        echo yes
+        exit 0
+fi
+
+if [ "$1" = "config" ] ; then
+        echo "graph_args -r --lower-limit 0 ";
+        echo "graph_title http response $URL";
+        echo "graph_category httping";
+        echo "graph_info httping response time: $URL";
+        echo 'graph_vlabel msec'
+
+        echo "connect.label connect time"
+        echo "connect.draw AREA"
+        echo "connect.type GAUGE"
+        echo "processing.label processing time"
+        echo "processing.draw STACK"
+        echo "processing.type GAUGE"
+        exit
+fi
+
+$httping_bin -c $COUNT -G -S $URL | tr '+|=' ' ' |  awk '{connect+=$9; processing+=$10} END{print "connect.value",connect/'$COUNT'"\n""processing.value",processing/'$COUNT'}'
+#$httping_bin -c $COUNT -G -S $URL | tr '+|=' ' ' |  awk '{connect+=$9; processing+=$10} END{print "connect.value",connect/$COUNT"\n""processing.value",processing/$COUNT}'
+
