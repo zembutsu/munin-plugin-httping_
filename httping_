@@ -7,10 +7,11 @@
 #%# family=auto
 #%# capabilities=autoconf
 
+. $MUNIN_LIBDIR/plugins/plugin.sh
+
 URL=${URL:-"http://localhost/"}
 COUNT=${COUNT:-"5"}
 httping_bin=$(which httping)
-
 
 if [ "$1" = "autoconf" ]; then
         echo yes
@@ -27,12 +28,17 @@ if [ "$1" = "config" ] ; then
         echo "connect.label connect time"
         echo "connect.draw AREA"
         echo "connect.type GAUGE"
+        echo "connect.info time to connect"
+        print_warning connect
+        print_critical connect
         echo "processing.label processing time"
         echo "processing.draw STACK"
         echo "processing.type GAUGE"
-        exit
+        echo "processing.info time to excahnge a request"
+        print_warning processing
+        print_critical processing
+        exit 0
 fi
 
 $httping_bin -c $COUNT -G -S $URL | tr '+|=' ' ' |  awk '{connect+=$9; processing+=$10} END{print "connect.value",connect/'$COUNT'"\n""processing.value",processing/'$COUNT'}'
 #$httping_bin -c $COUNT -G -S $URL | tr '+|=' ' ' |  awk '{connect+=$9; processing+=$10} END{print "connect.value",connect/$COUNT"\n""processing.value",processing/$COUNT}'
-
