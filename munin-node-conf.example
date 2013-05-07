@@ -2,10 +2,10 @@
 [httping_localhost]
     env.URL	http://pocketstudio.jp/
     env.COUNT	5
-    env.connect_warning 0.400
-    env.connect_critical 0.700
-    env.processing_warning 0.400
-    env.processing_critical 1.000
+    env.connect_warning 400
+    env.connect_critical 700
+    env.processing_warning 400
+    env.processing_critical 1000
 
 [httping_blog]
     env.URL	http://pocketstudio.jp/log3/

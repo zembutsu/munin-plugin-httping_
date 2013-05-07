@@ -15,10 +15,10 @@ ln -s /usr/share/munin/plugins/httping_ /etc/munin/plugins/httping_localhost
 [httping_localhost]
     env.URL	http://localhost/
     env.COUNT	5
-    env.connect_warning 0.400
-    env.connect_critical 0.700
-    env.processing_warning 0.400
-    env.processing_critical 1.000
+    env.connect_warning 400
+    env.connect_critical 700
+    env.processing_warning 400
+    env.processing_critical 1000
 ```
 
 ### plugin test
