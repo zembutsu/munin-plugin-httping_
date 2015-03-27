@@ -34,7 +34,7 @@ if [ "$1" = "config" ] ; then
         echo "processing.label processing time"
         echo "processing.draw STACK"
         echo "processing.type GAUGE"
-        echo "processing.info time to excahnge a request"
+        echo "processing.info time to exchange a request"
         print_warning processing
         print_critical processing
         exit 0
